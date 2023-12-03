@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+      background-color: #000000; 
+    }
+    #movingImage {
+      position: absolute;
+    }
+  </style>
+  <title>DVD Logo</title>
+</head>
+<body>
+<img id="movingImage" src="images/red_dvd_logo.png" alt="Moving Image">
+<script>
+  const imagePaths = [
+    "images/red_dvd_logo.png",
+    "images/blue_dvd_logo.png",
+    "images/green_dvd_logo.png",
+    "images/yellow_dvd_logo.png"
+  ];
+  const imageChangeInterval = 10000; 
+  let currentImageIndex = 0;
+  let lastImageChangeTime = Date.now();
+  function changeImage() { 
+    movingImage.src = imagePaths[currentImageIndex];
+    currentImageIndex = (currentImageIndex + 1) % imagePaths.length;
+    lastImageChangeTime = Date.now();
+  }
+  const movingImage = document.getElementById('movingImage');
+  const initialWidth = 200; 
+  const initialHeight = 150; 
+
+  movingImage.width = initialWidth;
+  movingImage.height = initialHeight;
+  const speed = 5; 
+  
+  const centerX = window.innerWidth / 2;
+  const centerY = window.innerHeight / 2;
+
+  let x = centerX;
+  let y = centerY;
+
+  let dx = (Math.random() - 0.5) * speed;
+  let dy = (Math.random() - 0.5) * speed;
+
+  function animate() {
+    requestAnimationFrame(animate);
+    x += dx;
+    y += dy;
+    if (x + movingImage.width > window.innerWidth || x < 0) {
+      dx = -dx; 
+    }
+    if (y + movingImage.height > window.innerHeight || y < 0) {
+      dy = -dy; 
+    }
+    movingImage.style.left = x + 'px';
+    movingImage.style.top = y + 'px';
+    if (Date.now() - lastImageChangeTime >= imageChangeInterval) {
+      changeImage();
+    }
+  }
+  animate();
+</script>
+</body>
+</html>
